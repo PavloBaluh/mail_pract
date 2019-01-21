@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:type="http://www.w3.org/1999/xhtml">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form id="fn1" >
+    <input  name="name" placeholder="enter your name">
+    <input  type="email" name="email" placeholder="enter your email">
+    <input  name="img" type="file">
+    <button id="btn">click</button>
+</form>
+
+<h2 hidden id="h1"> enter code from email </h2>
+
+<div id="a"></div>
+
+<h3 id="b"></h3>
+<script>
+    $('#btn').click(function (e) {
+        e.preventDefault();
+        $('#h1').show();
+
+          $.ajax({
+            url: "/upload",
+            type: "POST",
+            data: new FormData($("#fn1")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (res) {
+              let $inp = $('<input/>',{id:"xxx"});
+              let $btn = $('<button>',{id:"yyy",text:"submit"});
+                $('#a').append($inp).append($btn);
+
+                $('#yyy').click(function () {
+                   let inp =  $('#xxx').val();
+                    if (res == inp ) {
+                        $("#b").text("currect");
+                    }
+                    else $("#b").text("incurrect");
+                })
+            },
+            error: function (err) {
+              console.log(err);
+            }
+          });
+
+
+    })
+</script>
+</body>
+</html>
